@@ -1,7 +1,0 @@
-#!/bin/sh
-
-set -e
-set -x
-python setup.py build_ext
-sudo python setup.py install
-python test-exr.py
