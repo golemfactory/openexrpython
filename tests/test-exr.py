@@ -19,8 +19,9 @@ except ImportError:
 import Imath
 import OpenEXR
 
-GOLDENGATE_EXR = os.path.join('assets', 'GoldenGate.exr')
-TIMECODE_EXR = os.path.join('assets', 'timecode.exr')
+CWD = os.path.dirname(__file__)
+GOLDENGATE_EXR = os.path.join(CWD, 'assets', 'GoldenGate.exr')
+TIMECODE_EXR = os.path.join(CWD, 'assets', 'timecode.exr')
 
 
 class TestDirected(unittest.TestCase):
@@ -84,7 +85,7 @@ class TestDirected(unittest.TestCase):
         f = OpenEXR.InputFile(GOLDENGATE_EXR)
         FLOAT = Imath.PixelType.FLOAT
         self.assertRaises(TypeError, lambda: f.channel('R',FLOAT))
-        
+
     def xtest_multiView(self):
         h = OpenEXR.Header(640, 480)
         for views in [[], ['single'], ['left', 'right'], list("abcdefghijklmnopqrstuvwxyz")]:
