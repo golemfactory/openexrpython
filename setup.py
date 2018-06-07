@@ -21,7 +21,7 @@ WINDOWS_KWARGS = dict(
     extra_compile_args=['/DVERSION#\\"%s\\"' % VERSION]
 )
 
-UNIX_KWARGS = dict(
+LINUX_KWARGS = dict(
     include_dirs=(
         '/usr/include/OpenEXR',
         '/usr/local/include/OpenEXR',
@@ -35,15 +35,30 @@ UNIX_KWARGS = dict(
     extra_compile_args=['-DVERSION="%s"' % VERSION]
 )
 
+MACOS_KWARGS = dict(
+    include_dirs=(
+        '/usr/include/OpenEXR',
+        '/usr/local/include/OpenEXR',
+        '/opt/local/include/OpenEXR'
+    ),
+    library_dirs=(
+        './lib/macos/openexr-2.2/lib',
+        '/usr/lib/',
+    ),
+    libraries=['Iex', 'Half', 'Imath', 'IlmThread', 'IlmImf', 'z'],
+    extra_compile_args=['-DVERSION="%s"' % VERSION],
+)
+
 
 extension_kwargs = None
 requirements = []
 
 if sys.platform == 'win32':
     extension_kwargs = WINDOWS_KWARGS
-# should handle both linux and darwin
+elif sys.platform == 'darwin':
+    extension_kwargs = MACOS_KWARGS
 else:
-    extension_kwargs = UNIX_KWARGS
+    extension_kwargs = LINUX_KWARGS
 
     if sys.platform.startswith('linux'):
         requirements.append('auditwheel')  # for manylinux
